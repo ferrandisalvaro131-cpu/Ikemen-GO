@@ -1,45 +1,19 @@
-name: Build Win32
-
 on:
   workflow_dispatch:
 
-# 1. Permiso necesario para que GitHub permita crear releases
-permissions:
-  contents: write
+
+
+
 
 jobs:
   build:
     runs-on: windows-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up MSYS2
-        uses: msys2/msys2-action@v2
-        with:
-          msystem: MINGW64
-          update: true
-          install: >-
-            git make diffutils mingw-w64-x86_64-pkg-config
-            mingw-w64-x86_64-go mingw-w64-x86_64-toolchain
-            mingw-w64-x86_64-nasm mingw-w64-x86_64-yasm
-            mingw-w64-x86_64-tools-git mingw-w64-x86_64-libxmp
-            mingw-w64-x86_64-SDL2
-            mingw-w64-i686-toolchain mingw-w64-i686-pkg-config
-            mingw-w64-i686-nasm mingw-w64-i686-yasm
-            mingw-w64-i686-libxmp mingw-w64-i686-SDL2
-
-      - name: Build Win32 with MSYS2
-        shell: msys2 {0}
+@@ -34,12 +30,8 @@ jobs:
         run: |
           ./build/build.sh Win32
 
-      - name: Upload Release
-        uses: ncipollo/release-action@v1.21.0
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          artifacts: "Ikemen_GO_x86.exe"
-          token: ${{ secrets.GITHUB_TOKEN }}   # <-- 2. Token requerido que faltaba
-          tag: "win32-build"
-          name: "Ikemen GO Win32"
-          allowUpdates: true
-          replacesArtifacts: true
+          name: Ikemen_GO_x86
+          path: Ikemen_GO_x86.exe
