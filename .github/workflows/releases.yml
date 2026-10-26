@@ -3,10 +3,6 @@ name: Build Win32
 on:
   workflow_dispatch:
 
-# 1. Permiso necesario para que GitHub permita crear releases
-permissions:
-  contents: write
-
 jobs:
   build:
     runs-on: windows-latest
@@ -34,12 +30,8 @@ jobs:
         run: |
           ./build/build.sh Win32
 
-      - name: Upload Release
-        uses: ncipollo/release-action@v1.21.0
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          artifacts: "Ikemen_GO_x86.exe"
-          token: ${{ secrets.GITHUB_TOKEN }}   # <-- 2. Token requerido que faltaba
-          tag: "win32-build"
-          name: "Ikemen GO Win32"
-          allowUpdates: true
-          replacesArtifacts: true
+          name: Ikemen_GO_x86
+          path: Ikemen_GO_x86.exe
